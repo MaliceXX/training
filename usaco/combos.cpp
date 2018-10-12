@@ -1,7 +1,7 @@
 /**
- *  author: nthoang
- *  created: 02.09.2018
- *  judge: local
+ *    author: nthoang
+ *    created: 02.09.2018
+ *    judge: local
 **/
 #include <bits/stdc++.h>
 
@@ -80,4 +80,3 @@ int main() {
   cout << ans << '\n';
   return 0;
 }
-
