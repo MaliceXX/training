@@ -15,51 +15,73 @@ using namespace std;
 
 template <typename T>
 struct point2d {
-  T x, y;
-  point2d() : x(0), y(0) {}
-  point2d(const T& x, const T& y) : x(x), y(y) {}
-  point2d operator+(const point2d& p) { return point2d(x + p.x, y + p.y); }
-  point2d operator-(const point2d& p) { return point2d(x - p.x, y - p.y); }
-  point2d operator*(const T &a) { return point2d(x * a, y * a); }
-  point2d operator/(const T &a) { return point2d(x / a, y / a); }
+  typedef T ftype;
+
+  ftype x;
+  ftype y;
+
+  point2d() { }
+
+  point2d(const ftype& _x, const ftype& _y) : x(_x), y(_y) { }
+
+  point2d& operator+=(const point2d& p) {
+    x += p.x; 
+    y += p.y;
+    return *this;
+  }
+
+  point2d& operator-=(const point2d& p) {
+    x -= p.x; 
+    y -= p.y;
+    return *this;
+  }
+
+  point2d& operator*=(ftype k) {
+    x *= k; 
+    y *= k;
+    return* this;
+  }
+
+  point2d& operator/=(ftype k) {
+    x /= k;
+    y /= k;
+    return *this;
+  }
 };
 
-typedef point2d<long long> point;
-typedef pair<point, point> segment;
+typedef point2d<int> point;
 
-inline void get(point& p) {
-  scanf("%lld %lld", &p.x, &p.y);
+inline long long dot(point p, point q) {
+  return p.x * 1LL * q.x + p.y * 1LL * q.y;
 }
 
-inline void get(segment& s) {
-  get(s.first); get(s.second);
+inline long long norm(point p) {
+  return dot(p, p);
 }
 
-inline long long dot(point a, point b) {
-  return a.x * 1LL * b.x + a.y * 1LL * b.y;
-}
-
-inline long long cross(point a, point b) {
-  return a.x * 1LL * b.y - b.x * 1LL * a.y;
-}
-
-inline long long norm(point a) {
-  return dot(a, a);
+inline long long cross(point p, point q) {
+  return p.x * 1LL * q.y - q.x * 1LL * p.y;
 }
 
 inline int ccw(point a, point b, point c) {
-  b = b - a; c = c - a;
-  long long det = cross(b, c);
-  if (det < 0) return -1;
-  else if (det > 0) return 1;
+  b -= a; c -= a;
+  long long d = cross(b, c);
+  if (d < 0) return -1;
+  else if (d > 0) return 1;
   else if (dot(b, c) < 0) return -2;
   else if (norm(b) < norm(c)) return 2;
-  else return 0;
+  return 0;
 }
 
 inline bool intersect(point a, point b, point c, point d) {
   return ccw(a, b, c) * ccw(a, b, d) <= 0 && ccw(c, d, a) * ccw(c, d, b) <= 0;
 }
+
+inline void get(point& p) {
+  scanf("%d %d", &p.x, &p.y);
+}
+
+typedef pair<point, point> segment;
 
 int main() {
   freopen("steeple.in", "r", stdin);
@@ -69,14 +91,16 @@ int main() {
   vector<segment> ver, hor;
   for (int i = 0; i < n; ++i) {
     segment s;
-    get(s);
+    get(s.first);
+    get(s.second);
     if (s.first.x == s.second.x) {
       ver.push_back(s);
     } else {
       hor.push_back(s);
     }
   }
-  int nv = (int) ver.size(), nh = hor.size();
+  int nv = (int) ver.size();
+  int nh = (int) hor.size();
   vector<vector<int>> g(nv);
   for (int i = 0; i < nv; ++i) {
     for (int j = 0; j < nh; ++j) {
@@ -90,13 +114,13 @@ int main() {
   for (int i = 0; i < nv; ++i) {
     vector<bool> was(nh);
     function<bool(int)> dfs = [&](int v) {
-      for (int u : g[v]) {
-        if (!was[u]) {
-          was[u] = true;
-          if (match[u] == -1 || dfs(match[u])) {
-            match[u] = v;
+      for (int to : g[v]) {
+        if (!was[to]) {
+          was[to] = true;
+          if (match[to] == -1 || dfs(match[to])) {
+            match[to] = v;
             return true;
-          }  
+          }
         }
       }
       return false;
