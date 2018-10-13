@@ -52,10 +52,8 @@ string solve(int it, int on_bits, int significant, int pos) {
 }
 
 int main() {
-#ifdef LOCAL
-  freopen("input.txt", "r", stdin);
-  freopen("output.txt", "w", stdout);
-#endif
+  freopen("cowids.in", "r", stdin);
+  freopen("cowids.out", "w", stdout);
   int n;
   scanf("%d %d", &n, &k);
   if (k == 1) {
