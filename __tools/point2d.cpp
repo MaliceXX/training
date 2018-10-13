@@ -21,15 +21,15 @@ struct point2d {
     return *this;
   }
 
-  point2d& operator*=(ftype a) {
-    x *= a; 
-    y *= a;
+  point2d& operator*=(ftype k) {
+    x *= k; 
+    y *= k;
     return* this;
   }
 
-  point2d& operator/=(ftype a) {
-    x /= a;
-    y /= a;
+  point2d& operator/=(ftype k) {
+    x /= k;
+    y /= k;
     return *this;
   }
 };
