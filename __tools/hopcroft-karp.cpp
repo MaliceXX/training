@@ -4,18 +4,18 @@ class hopcroft_karp {
   vector<int> pa, pb;
   vector<vector<int>> g;
   vector<int> d;
-
+  
   hopcroft_karp(int _na, int _nb) : na(_na), nb(_nb) {
-    g.resize(na); 
     pa.resize(na);
     pb.resize(nb);
+    g.resize(na);
     d.resize(na);
   }
-
+  
   inline void add_edge(int a, int b) {
     g[a].push_back(b);
   }
-
+  
   void bfs() {
     fill(d.begin(), d.end(), -1);
     queue<int> qu;
@@ -37,7 +37,7 @@ class hopcroft_karp {
       }
     }
   }
-
+  
   bool dfs(int v) {
     for (int to : g[v]) {
       int u = pb[to];
@@ -47,10 +47,9 @@ class hopcroft_karp {
         return true;
       }
     }
-    d[v] = -1;
     return false;
   }
-
+  
   int max_matching() {
     fill(pa.begin(), pa.end(), -1);
     fill(pb.begin(), pb.end(), -1);
@@ -58,15 +57,14 @@ class hopcroft_karp {
     while (true) {
       bfs();
       int add = 0;
-      for (int v = 0; v < na; ++v) {
-        if (pa[v] == -1 && dfs(v)) {
+      for (int i = 0; i < na; ++i) {
+        if (pa[i] == -1 && dfs(i)) {
           ++add;
         }
       }
+      ret += add;
       if (add == 0) {
         break;
-      } else {
-        ret += add;
       }
     }
     return ret;
