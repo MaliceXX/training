@@ -2,28 +2,7 @@ template <typename T>
 class dinic {
  public:
   struct edge {
-    int from;
-    int to;
-    T cap;
-    T flow;
-  };
-  
-  int n;
-  int st, fin;
-  vector<edge> edges;
-  vector<vector<int>> g;
-  vector<int> level;
-  vector<int> ptr;
-  
-  dinic(int _n, int _st, int _fin) : n(_n), st(_st), fin(_fin) {
-    g.resize(n);
-    level.resize(n);
-    ptr.resize(n);
-  }
-  
-  void add_edge(int x, int y, T c) {
-    int id = (int) edges.size();
-    edges.push_back({x, y, c, 0});
+    k({x, y, c, 0});
     edges.push_back({y, x, 0, 0});
     g[x].push_back(id);
     g[y].push_back(id + 1);
